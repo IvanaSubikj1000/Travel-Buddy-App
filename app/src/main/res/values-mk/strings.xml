@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Патен другар</string>
+    <string name="email">Е-пошта</string>
+    <string name="password">Лозинка</string>
+    <string name="sign_in">Најавете се</string>
+    <string name="create_account">Создадете сметка</string>
+    <string name="continue_as_guest">Продолжете како гостин</string>
+    <string name="sign_in_with_google">Најавете се со Google</string>
+    <string name="signed_in_as">Најавени сте како: %1$s</string>
+    <string name="guest">Гостин</string>
+    <string name="sign_out">Одјавете се</string>
+    <string name="error_email_required">Е-поштата е задолжителна</string>
+    <string name="error_password_required">Лозинката е задолжителна</string>
+    <string name="error_password_too_short">Лозинката мора да биде најмалку 6 карактери</string>
+</resources>

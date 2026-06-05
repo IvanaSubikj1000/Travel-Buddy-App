@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -38,6 +39,13 @@ dependencies {
     implementation libs.appcompat
     implementation libs.constraintlayout
     implementation libs.material
+    implementation libs.lifecycle.viewmodel
+    implementation libs.lifecycle.livedata
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.auth
+    implementation libs.credentials
+    implementation libs.credentials.gms
+    implementation libs.googleid
     testImplementation libs.junit
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.ext.junit
