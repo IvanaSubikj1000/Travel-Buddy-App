@@ -71,4 +71,10 @@
     <!-- Explore / Profile -->
     <string name="explore_placeholder">Истражи — наскоро</string>
     <string name="profile_title">Профил</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Известувања за Патен другар</string>
+    <string name="notification_channel_description">Потсетувања и ажурирања за вашите патувања</string>
+    <string name="notification_default_title">Патен другар</string>
+    <string name="notification_default_body">Имате ново ажурирање</string>
 </resources>

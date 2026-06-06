@@ -14,6 +14,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.travelbuddy.data.PlaceRepository;
@@ -25,6 +26,7 @@ public class AddEditPlaceActivity extends AppCompatActivity {
     public static final String EXTRA_PLACE_ID = "extra_place_id";
 
     private PlaceRepository placeRepository;
+    private FirebaseAnalytics analytics;
     private TextInputLayout nameLayout;
     private TextInputEditText nameInput;
     private MaterialAutoCompleteTextView categoryDropdown;
@@ -42,6 +44,7 @@ public class AddEditPlaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit_place);
 
         placeRepository = new PlaceRepository(getApplication());
+        analytics = FirebaseAnalytics.getInstance(this);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +84,16 @@ public class AddEditPlaceActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.saveButton).setOnClickListener(v -> save());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME,
+                isEditMode ? "edit_place" : "add_place");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "AddEditPlaceActivity");
+        analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 
     @Override
@@ -134,6 +147,7 @@ public class AddEditPlaceActivity extends AppCompatActivity {
             placeRepository.update(place);
         } else {
             placeRepository.insert(place);
+            analytics.logEvent("place_added", null);
         }
         finish();
     }

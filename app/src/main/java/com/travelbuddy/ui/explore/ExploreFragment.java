@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.travelbuddy.R;
 
 public class ExploreFragment extends Fragment {
@@ -19,5 +20,15 @@ public class ExploreFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_explore, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME, "explore");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ExploreFragment");
+        FirebaseAnalytics.getInstance(requireContext())
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 }

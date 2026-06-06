@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.travelbuddy.AddEditTripActivity;
 import com.travelbuddy.R;
 import com.travelbuddy.TripDetailActivity;
@@ -56,5 +57,15 @@ public class TripsFragment extends Fragment {
 
         fab.setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), AddEditTripActivity.class)));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME, "trips");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "TripsFragment");
+        FirebaseAnalytics.getInstance(requireContext())
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 }

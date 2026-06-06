@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.travelbuddy.AuthActivity;
@@ -44,5 +45,15 @@ public class ProfileFragment extends Fragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME, "profile");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "ProfileFragment");
+        FirebaseAnalytics.getInstance(requireContext())
+                .logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 }

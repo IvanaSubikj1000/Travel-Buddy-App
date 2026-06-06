@@ -2,7 +2,6 @@ package com.travelbuddy;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,6 +11,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.travelbuddy.data.local.Trip;
 import com.travelbuddy.ui.trips.TripViewModel;
 
@@ -25,6 +25,7 @@ public class AddEditTripActivity extends AppCompatActivity {
     public static final String EXTRA_TRIP_ID = "extra_trip_id";
 
     private TripViewModel viewModel;
+    private FirebaseAnalytics analytics;
     private TextInputLayout titleLayout;
     private TextInputEditText titleInput;
     private TextInputEditText destinationInput;
@@ -50,6 +51,7 @@ public class AddEditTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit_trip);
 
         viewModel = new ViewModelProvider(this).get(TripViewModel.class);
+        analytics = FirebaseAnalytics.getInstance(this);
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +83,16 @@ public class AddEditTripActivity extends AppCompatActivity {
         startDateButton.setOnClickListener(v -> showDatePicker(true));
         endDateButton.setOnClickListener(v -> showDatePicker(false));
         findViewById(R.id.saveButton).setOnClickListener(v -> save());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME,
+                currentTrip != null ? "edit_trip" : "add_trip");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "AddEditTripActivity");
+        analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 
     private void populateFields(Trip trip) {

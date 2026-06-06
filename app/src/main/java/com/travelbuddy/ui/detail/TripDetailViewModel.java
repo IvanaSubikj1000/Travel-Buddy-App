@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.travelbuddy.data.ChecklistRepository;
@@ -24,6 +25,7 @@ public class TripDetailViewModel extends AndroidViewModel {
     private final TripRepository tripRepository;
     private final PlaceRepository placeRepository;
     private final ChecklistRepository checklistRepository;
+    private final FirebaseAnalytics analytics;
     private final String tripId;
     private final String userId;
 
@@ -35,6 +37,7 @@ public class TripDetailViewModel extends AndroidViewModel {
         tripRepository = new TripRepository(application);
         placeRepository = new PlaceRepository(application);
         checklistRepository = new ChecklistRepository(application);
+        analytics = FirebaseAnalytics.getInstance(application);
     }
 
     // --- Trip ---
@@ -45,6 +48,7 @@ public class TripDetailViewModel extends AndroidViewModel {
 
     public void deleteTrip(Trip trip) {
         tripRepository.delete(trip);
+        analytics.logEvent("trip_deleted", null);
     }
 
     // --- Places ---
@@ -58,6 +62,7 @@ public class TripDetailViewModel extends AndroidViewModel {
         place.setUserId(userId);
         place.setUpdatedAt(System.currentTimeMillis());
         placeRepository.insert(place);
+        analytics.logEvent("place_added", null);
     }
 
     public void updatePlace(Place place) {
@@ -80,6 +85,7 @@ public class TripDetailViewModel extends AndroidViewModel {
         item.setUserId(userId);
         item.setUpdatedAt(System.currentTimeMillis());
         checklistRepository.insert(item);
+        analytics.logEvent("checklist_item_added", null);
     }
 
     public void updateChecklistItem(ChecklistItem item) {

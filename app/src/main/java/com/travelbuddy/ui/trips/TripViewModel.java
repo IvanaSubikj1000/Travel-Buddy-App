@@ -6,22 +6,24 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.travelbuddy.data.TripRepository;
 import com.travelbuddy.data.local.Trip;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class TripViewModel extends AndroidViewModel {
 
     private final TripRepository repository;
+    private final FirebaseAnalytics analytics;
     private final String userId;
 
     public TripViewModel(@NonNull Application application) {
         super(application);
         repository = new TripRepository(application);
+        analytics = FirebaseAnalytics.getInstance(application);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         userId = user != null ? user.getUid() : "";
     }
@@ -38,6 +40,7 @@ public class TripViewModel extends AndroidViewModel {
         trip.setUserId(userId);
         trip.setUpdatedAt(System.currentTimeMillis());
         repository.insert(trip);
+        analytics.logEvent("trip_created", null);
     }
 
     public void update(Trip trip) {

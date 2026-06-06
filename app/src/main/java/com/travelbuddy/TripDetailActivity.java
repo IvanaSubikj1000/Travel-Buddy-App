@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.travelbuddy.data.local.ChecklistItem;
 import com.travelbuddy.data.local.Trip;
 import com.travelbuddy.ui.detail.ChecklistAdapter;
@@ -33,6 +34,7 @@ public class TripDetailActivity extends AppCompatActivity {
     public static final String EXTRA_TRIP_ID = "extra_trip_id";
 
     private TripDetailViewModel viewModel;
+    private FirebaseAnalytics analytics;
     private Trip currentTrip;
 
     private TextView titleText;
@@ -64,6 +66,8 @@ public class TripDetailActivity extends AppCompatActivity {
             return;
         }
 
+        analytics = FirebaseAnalytics.getInstance(this);
+
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -85,6 +89,16 @@ public class TripDetailActivity extends AppCompatActivity {
         setupPlaces(tripId);
         setupChecklist();
         observeTrip();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (analytics == null) return;
+        Bundle params = new Bundle();
+        params.putString(FirebaseAnalytics.Param.SCREEN_NAME, "trip_detail");
+        params.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "TripDetailActivity");
+        analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params);
     }
 
     private void setupPlaces(String tripId) {

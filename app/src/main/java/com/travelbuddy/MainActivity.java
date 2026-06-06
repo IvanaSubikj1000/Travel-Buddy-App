@@ -1,8 +1,13 @@
 package com.travelbuddy;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,11 +21,16 @@ import com.travelbuddy.ui.trips.TripsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActivityResultLauncher<String> requestNotificationPermission;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        requestNotificationPermission = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), granted -> {});
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
 
@@ -49,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
             loadFragment(fragment);
             return true;
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS);
+            }
+        }
     }
 
     private void loadFragment(Fragment fragment) {
