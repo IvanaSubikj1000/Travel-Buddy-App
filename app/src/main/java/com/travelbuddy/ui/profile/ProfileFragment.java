@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,12 +42,64 @@ public class ProfileFragment extends Fragment {
             emailText.setText(user.getEmail());
         }
 
+        TextView languageValue = view.findViewById(R.id.languageValue);
+        languageValue.setText(currentLanguageLabel());
+
+        view.findViewById(R.id.languageRow).setOnClickListener(v -> showLanguagePicker());
+
         view.findViewById(R.id.signOutButton).setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(requireContext(), AuthActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         });
+    }
+
+    private void showLanguagePicker() {
+        String[] options = {
+            getString(R.string.language_system_default),
+            getString(R.string.language_english),
+            getString(R.string.language_macedonian)
+        };
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.language_picker_title)
+                .setSingleChoiceItems(options, currentLanguageIndex(), (dialog, which) -> {
+                    dialog.dismiss();
+                    switch (which) {
+                        case 1:
+                            AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.forLanguageTags("en"));
+                            break;
+                        case 2:
+                            AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.forLanguageTags("mk"));
+                            break;
+                        default:
+                            AppCompatDelegate.setApplicationLocales(
+                                    LocaleListCompat.getEmptyLocaleList());
+                            break;
+                    }
+                })
+                .show();
+    }
+
+    private String currentLanguageLabel() {
+        LocaleListCompat locales = AppCompatDelegate.getApplicationLocales();
+        if (locales.isEmpty()) return getString(R.string.language_system_default);
+        String lang = locales.get(0).getLanguage();
+        if ("en".equals(lang)) return getString(R.string.language_english);
+        if ("mk".equals(lang)) return getString(R.string.language_macedonian);
+        return getString(R.string.language_system_default);
+    }
+
+    private int currentLanguageIndex() {
+        LocaleListCompat locales = AppCompatDelegate.getApplicationLocales();
+        if (locales.isEmpty()) return 0;
+        String lang = locales.get(0).getLanguage();
+        if ("en".equals(lang)) return 1;
+        if ("mk".equals(lang)) return 2;
+        return 0;
     }
 
     @Override

@@ -71,6 +71,13 @@
     <!-- Tablet two-pane -->
     <string name="no_trip_selected">Изберете патување за да видите детали</string>
 
+    <!-- Language picker -->
+    <string name="language_setting">Јазик</string>
+    <string name="language_picker_title">Изберете јазик</string>
+    <string name="language_system_default">Стандардно (систем)</string>
+    <string name="language_english">Англиски</string>
+    <string name="language_macedonian">Македонски</string>
+
     <!-- Explore / Profile -->
     <string name="explore_placeholder">Истражи — наскоро</string>
     <string name="profile_title">Профил</string>

@@ -71,6 +71,13 @@
     <!-- Tablet two-pane -->
     <string name="no_trip_selected">Select a trip to view details</string>
 
+    <!-- Language picker -->
+    <string name="language_setting">Language</string>
+    <string name="language_picker_title">Choose language</string>
+    <string name="language_system_default">System default</string>
+    <string name="language_english">English</string>
+    <string name="language_macedonian">Macedonian</string>
+
     <!-- Explore / Profile -->
     <string name="explore_placeholder">Explore — coming soon</string>
     <string name="profile_title">Profile</string>
