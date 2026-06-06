@@ -68,6 +68,9 @@
     <!-- Accessibility -->
     <string name="content_description_delete">Delete</string>
 
+    <!-- Tablet two-pane -->
+    <string name="no_trip_selected">Select a trip to view details</string>
+
     <!-- Explore / Profile -->
     <string name="explore_placeholder">Explore — coming soon</string>
     <string name="profile_title">Profile</string>

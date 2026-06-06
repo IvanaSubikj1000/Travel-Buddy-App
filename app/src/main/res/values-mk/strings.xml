@@ -68,6 +68,9 @@
     <!-- Accessibility -->
     <string name="content_description_delete">Избриши</string>
 
+    <!-- Tablet two-pane -->
+    <string name="no_trip_selected">Изберете патување за да видите детали</string>
+
     <!-- Explore / Profile -->
     <string name="explore_placeholder">Истражи — наскоро</string>
     <string name="profile_title">Профил</string>
