@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import com.travelbuddy.data.local.AppDatabase;
 import com.travelbuddy.data.local.Place;
 import com.travelbuddy.data.local.PlaceDao;
+import com.travelbuddy.sync.SyncManager;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -18,10 +19,12 @@ import java.util.function.Consumer;
 public class PlaceRepository {
 
     private final PlaceDao placeDao;
+    private final SyncManager syncManager;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public PlaceRepository(Application application) {
         placeDao = AppDatabase.getInstance(application).placeDao();
+        syncManager = SyncManager.getInstance(application);
     }
 
     public LiveData<List<Place>> getPlacesForTrip(String tripId) {
@@ -29,15 +32,24 @@ public class PlaceRepository {
     }
 
     public void insert(Place place) {
-        executor.execute(() -> placeDao.insert(place));
+        executor.execute(() -> {
+            placeDao.insert(place);
+            syncManager.syncPlace(place);
+        });
     }
 
     public void update(Place place) {
-        executor.execute(() -> placeDao.update(place));
+        executor.execute(() -> {
+            placeDao.update(place);
+            syncManager.syncPlace(place);
+        });
     }
 
     public void delete(Place place) {
-        executor.execute(() -> placeDao.delete(place));
+        executor.execute(() -> {
+            placeDao.delete(place);
+            syncManager.deletePlace(place.getId(), place.getUserId());
+        });
     }
 
     public void getPlaceById(String id, Consumer<Place> callback) {

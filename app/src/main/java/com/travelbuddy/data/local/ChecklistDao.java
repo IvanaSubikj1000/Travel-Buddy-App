@@ -24,4 +24,7 @@ public interface ChecklistDao {
 
     @Query("SELECT * FROM checklist_items WHERE tripId = :tripId ORDER BY rowid ASC")
     LiveData<List<ChecklistItem>> getItemsForTrip(String tripId);
+
+    @Query("SELECT * FROM checklist_items WHERE id = :id LIMIT 1")
+    ChecklistItem getChecklistItemByIdSync(String id);
 }
