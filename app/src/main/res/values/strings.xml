@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Travel Buddy</string>
+
+    <!-- Auth -->
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign In</string>
@@ -12,4 +14,61 @@
     <string name="error_email_required">Email is required</string>
     <string name="error_password_required">Password is required</string>
     <string name="error_password_too_short">Password must be at least 6 characters</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_trips">Trips</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Trips list -->
+    <string name="trips_empty">No trips yet.\nTap + to add your first one!</string>
+    <string name="add_trip">Add Trip</string>
+
+    <!-- Add/Edit trip -->
+    <string name="edit_trip">Edit Trip</string>
+    <string name="trip_title">Title</string>
+    <string name="trip_destination">Destination</string>
+    <string name="trip_start_date">Start Date</string>
+    <string name="trip_end_date">End Date</string>
+    <string name="trip_dates">Dates</string>
+    <string name="trip_notes">Notes</string>
+    <string name="select_start_date">Select start date</string>
+    <string name="select_end_date">Select end date</string>
+    <string name="save">Save</string>
+    <string name="error_title_required">Title is required</string>
+
+    <!-- Trip detail (trip-level actions) -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_title">Delete Trip</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this trip?</string>
+    <string name="cancel">Cancel</string>
+    <string name="not_set">—</string>
+
+    <!-- Places section -->
+    <string name="places_section_title">Places</string>
+    <string name="places_empty">No places added yet</string>
+    <string name="add_place">Add Place</string>
+    <string name="edit_place">Edit Place</string>
+    <string name="place_name">Name</string>
+    <string name="place_category">Category</string>
+    <string name="place_address">Address</string>
+    <string name="place_notes">Notes</string>
+    <string name="visited">Visited</string>
+    <string name="confirm_delete_place_title">Delete Place</string>
+    <string name="confirm_delete_place_message">Remove this place?</string>
+    <string name="error_name_required">Name is required</string>
+
+    <!-- Packing checklist section -->
+    <string name="packing_section_title">Packing Checklist</string>
+    <string name="checklist_empty">No items yet. Add one above.</string>
+    <string name="checklist_input_hint">New item…</string>
+    <string name="add">Add</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_delete">Delete</string>
+
+    <!-- Explore / Profile -->
+    <string name="explore_placeholder">Explore — coming soon</string>
+    <string name="profile_title">Profile</string>
 </resources>

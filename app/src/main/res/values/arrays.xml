@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        These values are used as canonical category identifiers stored in the DB.
+        Translations live in res/values-mk/arrays.xml but must match positionally
+        so the selected index maps to the same canonical name when syncing to Firestore.
+        For now both locales use the same English strings to keep the DB schema simple.
+    -->
+    <string-array name="place_categories">
+        <item>Sight</item>
+        <item>Food</item>
+        <item>Lodging</item>
+        <item>Activity</item>
+        <item>Other</item>
+    </string-array>
+</resources>

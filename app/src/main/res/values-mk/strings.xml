@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Патен другар</string>
+
+    <!-- Auth -->
     <string name="email">Е-пошта</string>
     <string name="password">Лозинка</string>
     <string name="sign_in">Најавете се</string>
@@ -12,4 +14,61 @@
     <string name="error_email_required">Е-поштата е задолжителна</string>
     <string name="error_password_required">Лозинката е задолжителна</string>
     <string name="error_password_too_short">Лозинката мора да биде најмалку 6 карактери</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_trips">Патувања</string>
+    <string name="nav_explore">Истражи</string>
+    <string name="nav_profile">Профил</string>
+
+    <!-- Trips list -->
+    <string name="trips_empty">Нема патувања.\nДопрете + за да додадете!</string>
+    <string name="add_trip">Додај патување</string>
+
+    <!-- Add/Edit trip -->
+    <string name="edit_trip">Уреди патување</string>
+    <string name="trip_title">Наслов</string>
+    <string name="trip_destination">Дестинација</string>
+    <string name="trip_start_date">Датум на поаѓање</string>
+    <string name="trip_end_date">Датум на враќање</string>
+    <string name="trip_dates">Датуми</string>
+    <string name="trip_notes">Белешки</string>
+    <string name="select_start_date">Изберете датум на поаѓање</string>
+    <string name="select_end_date">Изберете датум на враќање</string>
+    <string name="save">Зачувај</string>
+    <string name="error_title_required">Насловот е задолжителен</string>
+
+    <!-- Trip detail (trip-level actions) -->
+    <string name="edit">Уреди</string>
+    <string name="delete">Избриши</string>
+    <string name="confirm_delete_title">Избриши патување</string>
+    <string name="confirm_delete_message">Дали сте сигурни дека сакате да го избришете ова патување?</string>
+    <string name="cancel">Откажи</string>
+    <string name="not_set">—</string>
+
+    <!-- Places section -->
+    <string name="places_section_title">Места</string>
+    <string name="places_empty">Нема додадени места</string>
+    <string name="add_place">Додај место</string>
+    <string name="edit_place">Уреди место</string>
+    <string name="place_name">Име</string>
+    <string name="place_category">Категорија</string>
+    <string name="place_address">Адреса</string>
+    <string name="place_notes">Белешки</string>
+    <string name="visited">Посетено</string>
+    <string name="confirm_delete_place_title">Избриши место</string>
+    <string name="confirm_delete_place_message">Да се отстрани ова место?</string>
+    <string name="error_name_required">Името е задолжително</string>
+
+    <!-- Packing checklist section -->
+    <string name="packing_section_title">Листа за пакување</string>
+    <string name="checklist_empty">Нема ставки. Додајте погоре.</string>
+    <string name="checklist_input_hint">Нова ставка…</string>
+    <string name="add">Додај</string>
+
+    <!-- Accessibility -->
+    <string name="content_description_delete">Избриши</string>
+
+    <!-- Explore / Profile -->
+    <string name="explore_placeholder">Истражи — наскоро</string>
+    <string name="profile_title">Профил</string>
 </resources>

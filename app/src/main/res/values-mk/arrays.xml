@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Category display values for MK locale. Must stay positionally in sync with values/arrays.xml. -->
+    <string-array name="place_categories">
+        <item>Знаменитост</item>
+        <item>Храна</item>
+        <item>Сместување</item>
+        <item>Активност</item>
+        <item>Друго</item>
+    </string-array>
+</resources>
