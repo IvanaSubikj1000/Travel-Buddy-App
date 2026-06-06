@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1095340571939-98ouo4monmidv597gdr12akbqih9av5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.travelbuddy",
+            "certificate_hash": "1fabbc8b8f1db92958b7c5c714e4d9d1833d99d6"
+          }
+        },
+        {
           "client_id": "1095340571939-ujl3mq9c1el147armulalsh49ed7mcns.apps.googleusercontent.com",
           "client_type": 3
         }

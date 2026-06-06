@@ -12,6 +12,7 @@ lifecycle = "2.10.0"
 credentials = "1.6.0"
 googleid = "1.1.1"
 room = "2.6.1"
+facebookLogin = "17.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -33,6 +34,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebookLogin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

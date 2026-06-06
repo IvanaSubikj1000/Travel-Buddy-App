@@ -8,6 +8,7 @@
     <string name="create_account">Создадете сметка</string>
     <string name="continue_as_guest">Продолжете како гостин</string>
     <string name="sign_in_with_google">Најавете се со Google</string>
+    <string name="sign_in_with_facebook">Продолжи со Facebook</string>
     <string name="signed_in_as">Најавени сте како: %1$s</string>
     <string name="guest">Гостин</string>
     <string name="sign_out">Одјавете се</string>
@@ -36,6 +37,7 @@
     <string name="select_end_date">Изберете датум на враќање</string>
     <string name="save">Зачувај</string>
     <string name="error_title_required">Насловот е задолжителен</string>
+    <string name="error_account_collision">Веќе постои сметка со оваа е-пошта. Обидете се со друг начин за најава.</string>
 
     <!-- Trip detail (trip-level actions) -->
     <string name="edit">Уреди</string>

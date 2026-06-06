@@ -10,7 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class AuthViewModel extends AndroidViewModel {
@@ -85,6 +87,21 @@ public class AuthViewModel extends AndroidViewModel {
                 });
     }
 
+    public void signInWithFacebook(String accessToken) {
+        loading.setValue(true);
+        error.setValue(null);
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    loading.setValue(false);
+                    if (task.isSuccessful()) {
+                        logSignIn("facebook");
+                    } else {
+                        error.setValue(messageFrom(task.getException()));
+                    }
+                });
+    }
+
     private void logSignIn(String method) {
         Bundle params = new Bundle();
         params.putString(FirebaseAnalytics.Param.METHOD, method);
@@ -92,6 +109,9 @@ public class AuthViewModel extends AndroidViewModel {
     }
 
     private String messageFrom(Exception e) {
+        if (e instanceof FirebaseAuthUserCollisionException) {
+            return getApplication().getString(R.string.error_account_collision);
+        }
         return e != null ? e.getMessage() : "Unknown error";
     }
 }

@@ -15,18 +15,22 @@ import androidx.credentials.exceptions.GetCredentialCancellationException;
 import androidx.credentials.exceptions.GetCredentialException;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 public class AuthActivity extends AppCompatActivity {
-
-    private static final String WEB_CLIENT_ID =
-            "1095340571939-ujl3mq9c1el147armulalsh49ed7mcns.apps.googleusercontent.com";
 
     private AuthViewModel viewModel;
     private TextInputLayout emailLayout;
@@ -37,9 +41,11 @@ public class AuthActivity extends AppCompatActivity {
     private View signInButton;
     private View createAccountButton;
     private View googleButton;
+    private View facebookButton;
     private View guestButton;
     private FirebaseAuth.AuthStateListener authStateListener;
     private CredentialManager credentialManager;
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +68,31 @@ public class AuthActivity extends AppCompatActivity {
         signInButton = findViewById(R.id.signInButton);
         createAccountButton = findViewById(R.id.createAccountButton);
         googleButton = findViewById(R.id.googleButton);
+        facebookButton = findViewById(R.id.facebookButton);
         guestButton = findViewById(R.id.guestButton);
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                viewModel.signInWithFacebook(loginResult.getAccessToken().getToken());
+            }
+
+            @Override
+            public void onCancel() {}
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(AuthActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         viewModel.getLoading().observe(this, isLoading -> {
             progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
             signInButton.setEnabled(!isLoading);
             createAccountButton.setEnabled(!isLoading);
             googleButton.setEnabled(!isLoading);
+            facebookButton.setEnabled(!isLoading);
             guestButton.setEnabled(!isLoading);
         });
 
@@ -84,6 +108,7 @@ public class AuthActivity extends AppCompatActivity {
         });
         guestButton.setOnClickListener(v -> viewModel.signInAnonymously());
         googleButton.setOnClickListener(v -> launchGoogleSignIn());
+        facebookButton.setOnClickListener(v -> launchFacebookSignIn());
     }
 
     @Override
@@ -139,7 +164,7 @@ public class AuthActivity extends AppCompatActivity {
     private void launchGoogleSignIn() {
         GetGoogleIdOption option = new GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(WEB_CLIENT_ID)
+                .setServerClientId(getString(R.string.default_web_client_id))
                 .build();
 
         GetCredentialRequest request = new GetCredentialRequest.Builder()
@@ -176,5 +201,12 @@ public class AuthActivity extends AppCompatActivity {
                 viewModel.signInWithGoogle(googleCred.getIdToken());
             }
         }
+    }
+
+    private void launchFacebookSignIn() {
+        LoginManager.getInstance().logInWithReadPermissions(
+                this,
+                callbackManager,
+                Arrays.asList("email", "public_profile"));
     }
 }

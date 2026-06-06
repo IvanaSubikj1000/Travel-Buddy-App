@@ -108,6 +108,17 @@
                 app:icon="@drawable/ic_google"
                 app:iconGravity="textStart" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/facebookButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/sign_in_with_facebook"
+                app:icon="@drawable/ic_facebook"
+                app:iconGravity="textStart"
+                app:iconTint="@null" />
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
