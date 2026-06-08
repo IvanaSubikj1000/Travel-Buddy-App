@@ -38,6 +38,8 @@
     <string name="save">Зачувај</string>
     <string name="error_title_required">Насловот е задолжителен</string>
     <string name="error_account_collision">Веќе постои сметка со оваа е-пошта. Обидете се со друг начин за најава.</string>
+    <string name="error_google_sign_in">Најавата со Google не успеа. Обидете се повторно.</string>
+    <string name="error_facebook_sign_in">Најавата со Facebook не успеа. Обидете се повторно.</string>
 
     <!-- Trip detail (trip-level actions) -->
     <string name="edit">Уреди</string>

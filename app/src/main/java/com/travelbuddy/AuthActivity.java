@@ -2,9 +2,11 @@ package com.travelbuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.CredentialManagerCallback;
@@ -20,8 +22,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +32,8 @@ import java.util.Arrays;
 import java.util.concurrent.Executors;
 
 public class AuthActivity extends AppCompatActivity {
+
+    private static final String TAG = "AuthActivity";
 
     private AuthViewModel viewModel;
     private TextInputLayout emailLayout;
@@ -60,6 +63,42 @@ public class AuthActivity extends AppCompatActivity {
         credentialManager = CredentialManager.create(this);
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
+        // Temporary: log the actual key hash being used — compare with Meta Developer Portal
+        try {
+            android.content.pm.PackageInfo info = getPackageManager().getPackageInfo(
+                    getPackageName(), android.content.pm.PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature sig : info.signatures) {
+                java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA");
+                md.update(sig.toByteArray());
+                Log.d("FB_KEYHASH", "Key hash: " + android.util.Base64.encodeToString(
+                        md.digest(), android.util.Base64.DEFAULT).trim());
+            }
+        } catch (Exception e) {
+            Log.e("FB_KEYHASH", "Could not get key hash", e);
+        }
+
+        // Facebook SDK — callbackManager must be created before any login call
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, "Facebook onSuccess");
+                        viewModel.signInWithFacebook(loginResult.getAccessToken().getToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG, "Facebook onCancel");
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+                        Log.e(TAG, "Facebook onError: " + error.getMessage());
+                        viewModel.handleAuthError(error);
+                    }
+                });
+
         emailLayout = findViewById(R.id.emailLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
         emailInput = findViewById(R.id.emailInput);
@@ -70,22 +109,6 @@ public class AuthActivity extends AppCompatActivity {
         googleButton = findViewById(R.id.googleButton);
         facebookButton = findViewById(R.id.facebookButton);
         guestButton = findViewById(R.id.guestButton);
-
-        callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                viewModel.signInWithFacebook(loginResult.getAccessToken().getToken());
-            }
-
-            @Override
-            public void onCancel() {}
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(AuthActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
 
         viewModel.getLoading().observe(this, isLoading -> {
             progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
@@ -109,6 +132,13 @@ public class AuthActivity extends AppCompatActivity {
         guestButton.setOnClickListener(v -> viewModel.signInAnonymously());
         googleButton.setOnClickListener(v -> launchGoogleSignIn());
         facebookButton.setOnClickListener(v -> launchFacebookSignIn());
+    }
+
+    // Required by Facebook SDK to deliver the login result back to CallbackManager
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -162,9 +192,8 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void launchGoogleSignIn() {
-        GetGoogleIdOption option = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setServerClientId(getString(R.string.default_web_client_id))
+        GetSignInWithGoogleOption option = new GetSignInWithGoogleOption.Builder(
+                getString(R.string.default_web_client_id))
                 .build();
 
         GetCredentialRequest request = new GetCredentialRequest.Builder()
@@ -184,9 +213,13 @@ public class AuthActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(GetCredentialException e) {
+                        Log.e(TAG, "Google error: " + e.getClass().getSimpleName() + " — " + e.getMessage());
                         if (!(e instanceof GetCredentialCancellationException)) {
+                            String msg = e.getMessage();
                             runOnUiThread(() -> Toast.makeText(
-                                    AuthActivity.this, e.getMessage(), Toast.LENGTH_LONG).show());
+                                    AuthActivity.this,
+                                    msg != null ? msg : getString(R.string.error_google_sign_in),
+                                    Toast.LENGTH_LONG).show());
                         }
                     }
                 });
@@ -199,11 +232,18 @@ public class AuthActivity extends AppCompatActivity {
                 GoogleIdTokenCredential googleCred =
                         GoogleIdTokenCredential.createFrom(custom.getData());
                 viewModel.signInWithGoogle(googleCred.getIdToken());
+            } else {
+                Log.e(TAG, "Unexpected credential type: " + custom.getType());
+                Toast.makeText(this, R.string.error_google_sign_in, Toast.LENGTH_LONG).show();
             }
+        } else {
+            Log.e(TAG, "Unexpected credential class: " + result.getCredential().getClass());
+            Toast.makeText(this, R.string.error_google_sign_in, Toast.LENGTH_LONG).show();
         }
     }
 
     private void launchFacebookSignIn() {
+        Log.d(TAG, "Launching Facebook sign-in");
         LoginManager.getInstance().logInWithReadPermissions(
                 this,
                 callbackManager,

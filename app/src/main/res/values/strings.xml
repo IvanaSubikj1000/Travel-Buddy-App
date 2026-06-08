@@ -41,6 +41,8 @@
     <string name="save">Save</string>
     <string name="error_title_required">Title is required</string>
     <string name="error_account_collision">An account already exists with this email. Try signing in with a different method.</string>
+    <string name="error_google_sign_in">Google sign-in failed. Please try again.</string>
+    <string name="error_facebook_sign_in">Facebook sign-in failed. Please try again.</string>
 
     <!-- Trip detail (trip-level actions) -->
     <string name="edit">Edit</string>

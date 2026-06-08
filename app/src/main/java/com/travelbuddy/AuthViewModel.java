@@ -102,6 +102,10 @@ public class AuthViewModel extends AndroidViewModel {
                 });
     }
 
+    public void handleAuthError(Exception e) {
+        error.setValue(messageFrom(e));
+    }
+
     private void logSignIn(String method) {
         Bundle params = new Bundle();
         params.putString(FirebaseAnalytics.Param.METHOD, method);
